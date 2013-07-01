@@ -152,10 +152,14 @@ scan = function(args) {
   }
 };
 
-$(function () {
+init = function () {
   $("#startGame").click(function(e) {
     var n = parseInt($("#numPlayers").val(), 10);
     newGame(n);
+  });
+
+  $("#scanButton").click(function(e) {
+    window.plugins.barcodeScanner.scan(window.scan);
   });
 
   for (var i = 0 ; i < Game.cards.length ; i++) {
@@ -183,4 +187,7 @@ $(function () {
     }
   };
   loadReference();
-});
+};
+
+document.addEventListener("deviceready", init, false);
+$(init);
