@@ -145,6 +145,13 @@ Number.prototype.mod = function(n) {
   return ((this%n)+n)%n;
 };
 
+scan = function(args) {
+  $("#barcodeOutput").html(args.text);
+  if (!args.cancelled) {
+    window.plugins.barcodeScanner.scan(window.scan);
+  }
+};
+
 $(function () {
   $("#startGame").click(function(e) {
     var n = parseInt($("#numPlayers").val(), 10);

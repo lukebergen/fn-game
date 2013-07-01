@@ -5,19 +5,19 @@
     </style>
     <script src="/lib/jquery-1.10.0.min.js"></script>
     <script type="text/javascript" src="barcodescanner.js"></script>
-    <script src="game.js"></script>
-    <script src="cards.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="cards.js"></script>
+    <link href="/style.css" rel="stylesheet" type="text/css" />
     <title>fun()</title>
   </head>
   <body>
-    <div style="height:auto width: auto; float:left; background-color: #F0F0F0; padding: 15px;">
+    <div id="reference">
       Reference<br/>
-      <div id="reference">
-        <ul id="referenceCards" style="margin-left:-40px;">
-        </ul>
-      </div>
+      <div id="barcodeOutput"></div>
+      <ul id="referenceCards">
+      </ul>
     </div>
-    <div id="gamePlay" style="float:left; margin-left: 25px">
+    <div id="gamePlay">
       <label>Number of players</label>
       <select id="numPlayers">
         <option value=2 default>2</option>

@@ -1,0 +1,14 @@
+#reference {
+  height: auto;
+  width: auto;
+  float:left;
+  background-color: #F0F0F0;
+  padding: 15px;
+}
+#referenceCards {
+  margin-left:-40px;
+}
+#gamePlay {
+  float:left;
+  margin-left: 25px;
+}
