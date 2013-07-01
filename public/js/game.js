@@ -188,7 +188,7 @@ init = function () {
     var ul = $("#referenceCards");
     for (var i = 0 ; i < Game.cards.length ; i++) {
       var card = Game.cards[i];
-      var html = "<li>" + card.func.toString().replace("function", card.name).replace(/\n/g, "<br />").replace(/  /g, "&nbsp;") + "</li><br/>";
+      var html = "<li>" + Game.Card.format(card) + "</li><br/>";
       ul.append(html);
     }
   };
