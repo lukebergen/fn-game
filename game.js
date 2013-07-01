@@ -121,7 +121,9 @@ window.Game = function(numPlayers) {
     } else {
       result = "<li>" + cards[0].name + "(<ul>";
       for (var i = 1 ; i < cards.length ; i++) {
-        if (cards[i] !== undefined) {
+        if (cards[i] === undefined) {
+          result += "<li>___</li>";
+        } else {
           c = (i !== cards.length - 1);
           result += this.cardsToHtml(cards[i], c);
         }
@@ -153,8 +155,6 @@ scan = function(args) {
 };
 
 init = function () {
-  alert("here comes jquery: ");
-  alert($);
   $("#startGame").click(function(e) {
     var n = parseInt($("#numPlayers").val(), 10);
     newGame(n);
