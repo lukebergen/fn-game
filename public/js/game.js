@@ -33,12 +33,16 @@ window.Game = function(numPlayers) {
   };
 
   this.playCard = function(card) {
-    card.playedAt = game.playCount++;
-    this.pushCard(this.playedCards, card);
-    this.displayGame(this.playedCards);
-    if (this.isGameComplete(this.playedCards)) {
-      result = this.evalGame(this.playedCards);
-      $("#status").html(result);
+    if (game.playCount === 0 && card.name === "player") {
+      alert("first card played cannot be player");
+    } else {
+      card.playedAt = game.playCount++;
+      this.pushCard(this.playedCards, card);
+      this.displayGame(this.playedCards);
+      if (this.isGameComplete(this.playedCards)) {
+        result = this.evalGame(this.playedCards);
+        $("#status").html(result);
+      }
     }
   };
 

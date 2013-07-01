@@ -1,3 +1,1 @@
-map '/' do
-  run Rack::Directory.new('./')
-end
+run Rack::Directory.new('./public')
