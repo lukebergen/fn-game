@@ -153,6 +153,7 @@ scan = function(args) {
 };
 
 init = function () {
+  alert("here comes jquery: ");
   alert($);
   $("#startGame").click(function(e) {
     var n = parseInt($("#numPlayers").val(), 10);
