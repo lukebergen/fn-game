@@ -1,6 +1,7 @@
 window.Game = function(numPlayers) {
 
   this.players = [];
+  this.deck = new Deck(numPlayers, Game.cards.slice(1, Game.cards.length));
   this.playedCards = [Game.cards[0], undefined];
   this.playCount = 0;
   for (i = 0 ; i < numPlayers ; i++) {
@@ -37,6 +38,7 @@ window.Game = function(numPlayers) {
       alert("first card played cannot be player");
     } else {
       card.playedAt = game.playCount++;
+      this.deck.cardPlayed(card.playedAt % game.players.length, card);
       this.pushCard(this.playedCards, card);
       this.displayGame(this.playedCards);
       if (this.isGameComplete(this.playedCards)) {
@@ -110,6 +112,24 @@ window.Game = function(numPlayers) {
     }
     var html = "<ul>" + this.cardsToHtml(cards) + "</ul>";
     $("#game").html(html);
+
+    if (game.players) {
+      $("#playerHand").html(game.currentPlayer() + "'s hand");
+
+      html = this.deck.handToHtml(game.playCount % game.players.length);
+      $("#handCards").html(html);
+
+      for (var i = 1 ; i < Game.cards.length ; i++) {
+        $("#" + Game.cards[i].name + "Button").hide();
+      }
+      var currentPlayerIndex = game.playCount % game.players.length;
+      for (i = 0 ; i < this.deck.hands[currentPlayerIndex].length ; i++) {
+        $("#" + this.deck.hands[currentPlayerIndex][i].name + "Button").show();
+      }
+
+      $("#leftInDeck").html("Deck: " + game.deck.cards.length);
+    }
+
     return null;
   };
 
@@ -139,61 +159,69 @@ window.Game = function(numPlayers) {
   };
 };
 
+window.Deck = function(numPlayers, gameCards) {
 
-makeHandler = function(card) {
-  return function() {
-    var newCard = new Game.Card(card.name, card.args, card.func);
-    window.game.playCard(newCard);
-  };
-};
-
-Number.prototype.mod = function(n) {
-  return ((this%n)+n)%n;
-};
-
-scan = function(args) {
-  $("#barcodeOutput").html(args.text);
-  if (!args.cancelled) {
-    window.plugins.barcodeScanner.scan(window.scan);
-  }
-};
-
-init = function () {
-  $("#startGame").click(function(e) {
-    var n = parseInt($("#numPlayers").val(), 10);
-    newGame(n);
-  });
-
-  $("#scanButton").click(function(e) {
-    window.plugins.barcodeScanner.scan(window.scan);
-  });
-
-  for (var i = 0 ; i < Game.cards.length ; i++) {
-    c = Game.cards[i];
-    if (c.name == "winner") {continue;}
-    $("#playCards").append(
-      "<button id='" + c.name + "Button'>" + c.name + "</button>"
-    );
-    $("#" + c.name + "Button").click(makeHandler(c));
-  }
-
-  newGame = function(numPlayers) {
-    game = new Game(numPlayers);
-    $("#game").html("<ul></ul>");
-    game.displayGame(game.playedCards);
-  };
-  newGame(2);
-
-  loadReference = function() {
-    var ul = $("#referenceCards");
-    for (var i = 0 ; i < Game.cards.length ; i++) {
-      var card = Game.cards[i];
-      var html = "<li>" + Game.Card.format(card) + "</li><br/>";
-      ul.append(html);
+  this.cardPlayed = function(handIndex, cardPlayed) {
+    // TODO: remove cardPlayed from hand[handIndex]
+    var hand = this.hands[handIndex];
+    for (var i = 0 ; i < hand.length ; i++) {
+      if (hand[i].name == cardPlayed.name) {
+        hand.splice(i, 1);
+        if (this.cards.length > 0) {
+          hand.push(this.cards.pop());
+        }
+      }
     }
+    return hand;
   };
-  loadReference();
-};
 
-document.addEventListener("deviceready", init, false);
-$(init);
+  this.buildDeck = function(gameCards) {
+    // TODO based on gameCards, create a deck and return it
+    var result = [];
+    for (var i = 0 ; i < gameCards.length ; i++) {
+      card = gameCards[i];
+      for (var j = 0 ; j < card.perDeck ; j++) {
+        newCard = new Game.Card(card);
+        result.push(newCard);
+      }
+    }
+    return result;
+  };
+
+  this.shuffle = function(cards) {
+    for (var i = 0 ; i < 100 ; i++) {
+      swapIndex = Math.floor(Math.random() * cards.length);
+      temp = cards[swapIndex];
+      cards[swapIndex] = cards[0];
+      cards[0] = temp;
+    }
+    return cards;
+  };
+
+  this.handToHtml = function(index) {
+    var hand = this.hands[index];
+    var result = "";
+    var cardNames = this.cardNames(hand);
+    for (var i = 0 ; i < cardNames.length ; i++) {
+      result += cardNames[i] + "<br/ >";
+    }
+    return result;
+  };
+
+  this.cardNames = function(cards) {
+    names = [];
+    for (var i = 0 ; i < cards.length ; i++) {
+      names.push(cards[i].name);
+    }
+    return names;
+  };
+
+  this.cards = this.shuffle(this.buildDeck(gameCards));
+  this.hands = new Array(numPlayers);
+  for (var i = 0 ; i < numPlayers ; i++) {
+    this.hands[i] = [];
+    for (var j = 0 ; j < 5 ; j++) {
+      this.hands[i].push(this.cards.pop());
+    }
+  }
+};
