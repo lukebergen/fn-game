@@ -24,6 +24,12 @@ init = function () {
     newGame(n);
   });
 
+  $("#fillGame").click(function(e) {
+    if (game) {
+      game.fillGame();
+    }
+  });
+
   $("#scanButton").click(function(e) {
     window.plugins.barcodeScanner.scan(window.scan);
   });

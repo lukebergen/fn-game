@@ -84,6 +84,18 @@ window.Game = function(numPlayers) {
     return result;
   };
 
+  this.fillGame = function() {
+    var trueCard;
+    for (var i = 0 ; i < Game.cards.length ; i++) {
+      if (Game.cards[i].name == "true") {
+        trueCard = Game.cards[i];
+      }
+    }
+    while (!game.isGameComplete(game.playedCards)) {
+      game.playCard(new Game.Card(trueCard));
+    }
+  };
+
   this.evalGame = function(cards) {
     // base case: cards is a single value function
     if (cards.length === 1) {

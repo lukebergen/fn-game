@@ -28,7 +28,7 @@ Game.cards = [
   {
     name: "player",
     args: 0,
-    perDeck: 5,
+    perDeck: 16,
     func: function() {
       return game.currentPlayer(this);
     }
@@ -36,7 +36,7 @@ Game.cards = [
   {
     name: "if",
     args: 3,
-    perDeck: 5,
+    perDeck: 10,
     func: function(a, b, c) {
       if (a) { return b; }
       else {return c; }
@@ -45,19 +45,19 @@ Game.cards = [
   {
     name: "true",
     args: 0,
-    perDeck: 5,
+    perDeck: 10,
     func: function() { return true; }
   },
   {
     name: "false",
     args: 0,
-    perDeck: 5,
+    perDeck: 10,
     func: function() { return false; }
   },
   {
     name: "and",
     args: 2,
-    perDeck: 5,
+    perDeck: 6,
     func: function(a, b) {
       return a && b;
     }
@@ -65,7 +65,7 @@ Game.cards = [
   {
     name: "or",
     args: 2,
-    perDeck: 5,
+    perDeck: 6,
     func: function(a, b) {
       return a || b;
     }
@@ -89,7 +89,7 @@ Game.cards = [
   {
     name: "lshift",
     args: 1,
-    perDeck: 5,
+    perDeck: 4,
     func: function(a) {
       if (game.isPlayer(a)) {
         f = function(x) {
@@ -104,7 +104,7 @@ Game.cards = [
   {
     name: "rshift",
     args: 1,
-    perDeck: 5,
+    perDeck: 4,
     func: function(a) {
       if (game.isPlayer(a)) {
         f = function(x) {
