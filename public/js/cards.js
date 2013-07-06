@@ -28,7 +28,7 @@ Game.cards = [
   {
     name: "player",
     args: 0,
-    perDeck: 16,
+    perDeck: 14,
     func: function() {
       return game.currentPlayer(this);
     }
